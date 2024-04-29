@@ -12,24 +12,71 @@ const descripcion = document.getElementById('descripcion')
 const button = document.getElementById('submit');
 
 
+button.addEventListener('click', async(e) =>{
 
-function valiteFecha(date){
+    e.preventDefault();
+    isValidFecha = false;
+    isValidEmail = false;
+    isValidNombre = false;
+    isValidTelefono = false;
+    isValidDescripcion = false;
 
+    if(validateFecha(fecha.value)){
+    
+        const error  = document.getElementById('smallFecha');
+        error.className = '';
+        error.innerText = "";
+        isValidFecha = true;
+    
+    }else {
+        const error  = document.getElementById('smallFecha');
+        error.className = 'text-danger';
+        error.innerText = "Error, la fecha no puede ser posterior al día actual ni anterior al inicio del curso (01/09/2023)";
+    
+    }
+    
+    if(validateEmail(email.value)){
+        const error  = document.getElementById('smallEmail');
+        error.className = '';
+        error.innerText = "";
+        isValidEmail = true;
+    
+    }else {
+        const error  = document.getElementById('smallEmail');
+        error.className = 'text-danger';
+        error.innerText = "Error, el nombre debe estar en la base de datos";
+    }
+    
+    if(validateTelefono(telefono.value)){
+        const error  = document.getElementById('smallTelefono');
+        error.className = '';
+        error.innerText = "";
+        isValidTelefono = true;
+    
+    }else {
+        const error  = document.getElementById('smallTelefono');
+        error.className = 'text-danger';
+        error.innerText = "Error, el teléfono de contacto (debe ser un número de teléfono válido, compuesto por 9 números).";
+    }
+
+})
+
+
+function validateFecha(date) {
     const fechaSeleccionada = new Date(date);
     const fechaActual = new Date();
-    const inicioCurso = '2023/09/01';
-    const fechaCurso = new Date(inicioCurso);
-    isValid = false;
+    const inicioCurso = new Date('2023-09-01'); 
+    let isValid = false; 
 
-    if(fechaSeleccionada <= fechaActual || fechaSeleccionada <= fechaCurso){
-        isValid = true
+    if (fechaSeleccionada <= fechaActual && fechaSeleccionada >= inicioCurso) { 
+        isValid = true;
     }
 
     return isValid;
-
 }
 
-async function valiteName(){
+
+async function validateName(){
 
     try{
         const isValid = false;
@@ -57,9 +104,9 @@ async function valiteName(){
     }
 
 }
-valiteName()
+validateName()
 
-async function valiteEmail(){
+async function validateEmail(){
 
     try{
         const isValid = false;
@@ -85,8 +132,7 @@ async function valiteEmail(){
     
 
 }
-
-valiteEmail();
+validateEmail();
 
 function validateNombre(nombre){
 
