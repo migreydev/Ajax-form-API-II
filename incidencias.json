@@ -1,0 +1,121 @@
+{
+  "incidencias": [
+    {
+      "id": 1,
+      "fecha_incidente": "2023-11-15",
+      "id_reportante": 1,
+      "telefono_contacto": "123456789",
+      "hora_incidente": "2",
+      "id_aula": 3,
+      "descripcion": "Ocurrió un incidente grave durante la clase.",
+      "estado": "Abierta"
+    },
+    {
+      "id": 2,
+      "fecha_incidente": "2023-11-16",
+      "id_reportante": 2,
+      "telefono_contacto": "987654321",
+      "hora_incidente": "R",
+      "id_aula": 1,
+      "descripcion": "Se reportó un problema de seguridad en el laboratorio.",
+      "estado": "En Proceso"
+    }
+  ],
+  "usuarios": [
+  {
+    "id": 1,
+    "email": "usuario1@example.com",
+    "nombre": "Juan Pérez"
+  },
+  {
+    "id": 2,
+    "email": "usuario2@example.com",
+    "nombre": "María García"
+  },
+  {
+    "id": 3,
+    "email": "usuario3@example.com",
+    "nombre": "Luis González"
+  },
+  {
+    "id": 4,
+    "email": "usuario4@example.com",
+    "nombre": "Ana Martínez"
+  },
+  {
+    "id": 5,
+    "email": "usuario5@example.com",
+    "nombre": "Pedro López"
+  },
+  {
+    "id": 6,
+    "email": "usuario6@example.com",
+    "nombre": "Laura Rodríguez"
+  },
+  {
+    "id": 7,
+    "email": "usuario7@example.com",
+    "nombre": "Diego Sánchez"
+  },
+  {
+    "id": 8,
+    "email": "usuario8@example.com",
+    "nombre": "Sofía Pérez"
+  },
+  {
+    "id": 9,
+    "email": "usuario9@example.com",
+    "nombre": "Carlos García"
+  },
+  {
+    "id": 10,
+    "email": "usuario10@example.com",
+    "nombre": "Elena Martínez"
+  }
+]
+,
+  "aulas": [
+  {
+    "id": 1,
+    "nombre": "Laboratorio 1"
+  },
+  {
+    "id": 2,
+    "nombre": "Aula Magna"
+  },
+  {
+    "id": 3,
+    "nombre": "Sala de Profesores"
+  },
+  {
+    "id": 4,
+    "nombre": "Aula 101"
+  },
+  {
+    "id": 5,
+    "nombre": "Aula 102"
+  },
+  {
+    "id": 6,
+    "nombre": "Sala de Reuniones"
+  },
+  {
+    "id": 7,
+    "nombre": "Aula 201"
+  },
+  {
+    "id": 8,
+    "nombre": "Aula 202"
+  },
+  {
+    "id": 9,
+    "nombre": "Aula 301"
+  },
+  {
+    "id": 10,
+    "nombre": "Aula 302"
+  }
+]
+
+}
+
