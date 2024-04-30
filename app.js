@@ -5,7 +5,8 @@ const urlAulas = "http://localhost:3000/aulas";
 const fecha = document.getElementById('fecha');
 const email = document.getElementById('email');
 const nombre = document.getElementById('nombre');
-const telefono = document.getElementById('hora');
+const telefono = document.getElementById('telefono');
+const hora = document.getElementById('hora');
 const aula = document.getElementById('aula');
 const descripcion = document.getElementById('descripcion')
 
@@ -15,10 +16,12 @@ const button = document.getElementById('submit');
 button.addEventListener('click', async(e) =>{
 
     e.preventDefault();
+
     isValidFecha = false;
     isValidEmail = false;
     isValidNombre = false;
     isValidTelefono = false;
+    isValidHora = false;
     isValidDescripcion = false;
 
     if(validateFecha(fecha.value)){
@@ -34,8 +37,8 @@ button.addEventListener('click', async(e) =>{
         error.innerText = "Error, la fecha no puede ser posterior al día actual ni anterior al inicio del curso (01/09/2023)";
     
     }
-    
-    if(validateEmail(email.value)){
+    const emailValido = await validateEmail(email.value);
+    if(emailValido){
         const error  = document.getElementById('smallEmail');
         error.className = '';
         error.innerText = "";
@@ -44,7 +47,7 @@ button.addEventListener('click', async(e) =>{
     }else {
         const error  = document.getElementById('smallEmail');
         error.className = 'text-danger';
-        error.innerText = "Error, el nombre debe estar en la base de datos";
+        error.innerText = "Error, el email debe estar en la base de datos";
     }
     
     if(validateTelefono(telefono.value)){
@@ -57,6 +60,45 @@ button.addEventListener('click', async(e) =>{
         const error  = document.getElementById('smallTelefono');
         error.className = 'text-danger';
         error.innerText = "Error, el teléfono de contacto (debe ser un número de teléfono válido, compuesto por 9 números).";
+    }
+
+    if(validateHora(hora.value)){
+        const error  = document.getElementById('smallHora');
+        error.className = '';
+        error.innerText = "";
+        isValidHora = true;
+    }else {
+        const error  = document.getElementById('smallHora');
+        error.className = 'text-danger';
+        error.innerText = "Error, la hora debe ser un número de 1 al 6 o una R si sucedio en el recreo";
+    }
+
+    if(validateDescripcion(descripcion.value)){
+        const error  = document.getElementById('smallDescripcion');
+        error.className = '';
+        error.innerText = "";
+        isValidDescripcion = true;
+    }else {
+        const error  = document.getElementById('smallDescripcion');
+        error.className = 'text-danger';
+        error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
+    }
+
+    if(isValidFecha && isValidEmail && isValidNombre && isValidTelefono && isValidHora && isValidDescripcion){
+        const respuesta = await fetch (urlIncidencias, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "fecha_incidente": fecha.value,
+                "telefono_contacto": telefono.value,
+                "hora_incidente": hora.value,
+                "id_aula": aula.value,
+                "descripcion": descripcion.value,
+                "estado": "Abierta"
+            })
+        })
     }
 
 })
@@ -106,33 +148,31 @@ async function validateName(){
 }
 validateName()
 
-async function validateEmail(){
+async function validateEmail(email){
 
     try{
-        const isValid = false;
-        const respuesta  = await fetch (urlUsuarios);
+        isValid = false;
+        const respuesta  = await fetch (`${urlUsuarios}?email=${email}`);
 
         if(!respuesta.ok){
             console.log('Error al obtener la respuesta');
         }
 
-        const usuarios = await respuesta.json();
-
-        usuarios.forEach(element =>{
+        const usuario = await respuesta.json();
         
-            if(element.email === email.value){
-                
+        usuario.forEach(element =>{
+            if (element.email === email) {
                 isValid = true;
             }
         })
 
-    }catch(error){
+    } catch(error) {
         console.error(error);
     }
-    
 
+    return isValid;
 }
-validateEmail();
+
 
 function validateNombre(nombre){
 
@@ -141,9 +181,10 @@ function validateNombre(nombre){
 function validateHora(hora){
 
     const regexNumero = /^[1-6]$/;
-    const isValid = false;
+    isValid = false;
+    const numberHora = parseInt(hora);
 
-    if(regexNumero.test(hora) || hora === 'R' ){
+    if(regexNumero.test(numberHora) || hora.toUpperCase() === 'R' ){
         isValid = true;
     }
     return isValid;
@@ -165,7 +206,7 @@ function validateDescripcion(descripcion){
     const caracteres = 30;
     isValid = false;
 
-    if(descripcion >= caracteres){
+    if(descripcion.length >= caracteres){
         isValid = true;
     }
 
