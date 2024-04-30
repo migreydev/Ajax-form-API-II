@@ -37,8 +37,6 @@ async function getIncidencias(){
             a.href =  `./index.html?id=${incidencia.id}`;
         })
 
-
-
     };
 }
 
