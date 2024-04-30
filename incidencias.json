@@ -21,26 +21,6 @@
       "estado": "En Proceso"
     },
     {
-      "id": "bc0a",
-      "fecha_incidente": "2024-04-30",
-      "id_reportante": "nombre",
-      "telefono_contacto": "123456789",
-      "hora_incidente": "R",
-      "id_aula": "1",
-      "descripcion": "adfsfafafsgrgrgsragsrgarsgasrg",
-      "estado": "Abierta"
-    },
-    {
-      "id": "0760",
-      "fecha_incidente": "2024-04-15",
-      "id_reportante": "nombre",
-      "telefono_contacto": "123456789",
-      "hora_incidente": "1",
-      "id_aula": "1",
-      "descripcion": "FAEGSFHDGHDTHRGSHGJKGYUIYDNFGGFDGD",
-      "estado": "Abierta"
-    },
-    {
       "id": "aa89",
       "fecha_incidente": "2024-04-29",
       "id_reportante": "5",
@@ -48,6 +28,16 @@
       "hora_incidente": "R",
       "id_aula": "1",
       "descripcion": "bstiongoiesngnaeiongoarguornogirognrnaoui ",
+      "estado": "Abierta"
+    },
+    {
+      "id": "a444",
+      "fecha_incidente": "2024-04-01",
+      "id_reportante": "3",
+      "telefono_contacto": "123456789",
+      "hora_incidente": "4",
+      "id_aula": "3",
+      "descripcion": "gsnpgenwpifnkdfndankfnaeifneafnenfion prueba",
       "estado": "Abierta"
     }
   ],

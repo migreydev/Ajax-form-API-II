@@ -51,7 +51,6 @@ button.addEventListener('click', async(e) =>{
         error.innerText = "Error, el email debe estar en la base de datos";
     }
 
-    const nombreValido =  await validateName(email.value);
     
 
     if(validateTelefono(telefono.value)){
@@ -122,35 +121,6 @@ function validateFecha(date) {
 }
 
 
-async function validateName(email){
-
-    try{
-        isValid = false;
-        const respuesta  = await fetch (`${urlUsuarios}?email=${email}`);
-
-        if(!respuesta.ok){
-            console.log('Error al obtener la respuesta');
-        }
-
-        const usuario = await respuesta.json();
-
-        usuario.forEach(element =>{
-
-            if (element.email === email) {
-                nombre.id = element.id;
-                nombre.value = element.nombre;
-                isValid = true;
-            }
-            
-
-        })
-
-    } catch(error) {
-        console.error(error);
-    }
-
-}
-
 
 //Funcion para buscar el email en la API
 async function validateEmail(email){
@@ -167,6 +137,8 @@ async function validateEmail(email){
         
         usuario.forEach(element =>{
             if (element.email === email) {
+                nombre.id = element.id;
+                nombre.value = element.nombre;
                 isValid = true;
             }
         })
@@ -178,10 +150,6 @@ async function validateEmail(email){
     return isValid;
 }
 
-
-function validateNombre(nombre){
-
-}
 
 function validateHora(hora){
 
