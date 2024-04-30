@@ -213,3 +213,10 @@ async function getAulas(){
 }
 
 getAulas();
+
+
+const a  = document.createElement('a');
+a.innerText = 'Ir a la lista';
+a.classList = 'btn btn-dark';
+a.href = './list.html';
+form.append(a);
