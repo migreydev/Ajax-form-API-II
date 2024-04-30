@@ -60,6 +60,16 @@ if(id){
 
             descripcion.value = incidenciaAeditar.descripcion;
 
+            const divSelect = document.createElement('div');
+            const selectEstado = document.createElement('select');
+            const optionEstado = document.createElement('option');
+
+            const ultDiv = document.getElementById('ultimoDiv');
+            ultDiv.append(divSelect);
+            divSelect.append(selectEstado);
+            selectEstado.append(optionEstado);
+
+
             if(validateDescripcion(descripcion.value)){
                 const error  = document.getElementById('smallDescripcion');
                 error.className = '';
@@ -72,6 +82,7 @@ if(id){
                 error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
             }
 
+            const urlEditar = `${urlIncidencias}/${id}`;
             const respuesta = await fetch (urlEditar, {
                 method: 'PUT',
                 headers: {

@@ -74,6 +74,7 @@ async function getUsuarios(id){
         }
     
         const usuarios = await respuesta.json();
+        console.log('usuarios');
 
         return usuarios;
 
