@@ -10,8 +10,9 @@ const hora = document.getElementById('hora');
 const aula = document.getElementById('aula');
 const descripcion = document.getElementById('descripcion')
 
+const form = document.querySelector('form');
 const button = document.getElementById('submit');
-
+nombre.readOnly = true;
 
 button.addEventListener('click', async(e) =>{
 
@@ -49,7 +50,10 @@ button.addEventListener('click', async(e) =>{
         error.className = 'text-danger';
         error.innerText = "Error, el email debe estar en la base de datos";
     }
+
+    const nombreValido =  await validateName(email.value);
     
+
     if(validateTelefono(telefono.value)){
         const error  = document.getElementById('smallTelefono');
         error.className = '';
@@ -84,7 +88,7 @@ button.addEventListener('click', async(e) =>{
         error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
     }
 
-    if(isValidFecha && isValidEmail && isValidNombre && isValidTelefono && isValidHora && isValidDescripcion){
+    if(isValidFecha && isValidEmail  && isValidTelefono && isValidHora && isValidDescripcion){
         const respuesta = await fetch (urlIncidencias, {
             method: 'POST',
             headers: {
@@ -92,15 +96,15 @@ button.addEventListener('click', async(e) =>{
             },
             body: JSON.stringify({
                 "fecha_incidente": fecha.value,
+                "id_reportante": nombre.id,
                 "telefono_contacto": telefono.value,
-                "hora_incidente": hora.value,
+                "hora_incidente": hora.value.toUpperCase(),
                 "id_aula": aula.value,
                 "descripcion": descripcion.value,
                 "estado": "Abierta"
             })
         })
     }
-
 })
 
 
@@ -118,36 +122,37 @@ function validateFecha(date) {
 }
 
 
-async function validateName(){
+async function validateName(email){
 
     try{
-        const isValid = false;
-        const respuesta  = await fetch (urlUsuarios);
+        isValid = false;
+        const respuesta  = await fetch (`${urlUsuarios}?email=${email}`);
 
         if(!respuesta.ok){
             console.log('Error al obtener la respuesta');
         }
 
-        const usuarios = await respuesta.json();
+        const usuario = await respuesta.json();
 
-        usuarios.forEach(element =>{
-            const emailApi = element.email;
-            const nombreApi = element.nombre;
-            
-            if(email.value === emailApi){
-                nombre.value = nombreApi;
-                nombre.readOnly = true;
+        usuario.forEach(element =>{
 
+            if (element.email === email) {
+                nombre.id = element.id;
+                nombre.value = element.nombre;
+                isValid = true;
             }
+            
+
         })
 
-    }catch(error){
+    } catch(error) {
         console.error(error);
     }
 
 }
-validateName()
 
+
+//Funcion para buscar el email en la API
 async function validateEmail(email){
 
     try{
