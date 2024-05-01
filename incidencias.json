@@ -49,6 +49,26 @@
       "descripcion": "bndkjbopzdhjgidinginfiagnionariogniasngnisangionof prueba editado con modificaciones correctas",
       "estado": "Resuelta",
       "id": "39ad"
+    },
+    {
+      "fecha_incidente": "2024-04-29",
+      "id_reportante": "6",
+      "telefono_contacto": "123456789",
+      "hora_incidente": "3",
+      "id_aula": "10",
+      "descripcion": "fdafdafadfasladuoqdljkaKLDHiohddklsandklashdioahwkldnawobdawl",
+      "estado": "Abierta",
+      "id": "2577"
+    },
+    {
+      "fecha_incidente": "2024-04-29",
+      "id_reportante": "1",
+      "telefono_contacto": "123456789",
+      "hora_incidente": "R",
+      "id_aula": "1",
+      "descripcion": "vdavdvdvavdsvdghdfgbdfbdfbdfbd",
+      "estado": "Resuelta",
+      "id": "04c6"
     }
   ],
   "usuarios": [

@@ -29,7 +29,7 @@ async function getIncidencias(){
 
         if(incidencia.estado === 'Abierta' || incidencia.estado === 'En Proceso'){
 
-            li.innerText = `Id: ${incidencia.id}, Fecha: ${incidencia.fecha_incidente}, Aula: ${aula.nombre}, Nombre del reportante: ${usuario.nombre}`
+            li.innerHTML = `Id: <strong>${incidencia.id}</strong>, Fecha: <strong>${incidencia.fecha_incidente}</strong>, Aula: <strong>${aula.nombre}</strong>, Nombre del reportante: <strong>${usuario.nombre}</strong>`;
     
             li.append(a);
             ul.append(li);

@@ -187,21 +187,24 @@ if(id){
             error.innerText = "Error, la fecha no puede ser posterior al día actual ni anterior al inicio del curso (01/09/2023)";
         
         }
+
+    
+
         const emailValido = await validateEmail(email.value);
+    
         if(emailValido){
             const error  = document.getElementById('smallEmail');
             error.className = '';
-            error.innerText = "";
+            error.innerText = '';
             isValidEmail = true;
-        
+
         }else {
             const error  = document.getElementById('smallEmail');
             error.className = 'text-danger';
-            error.innerText = "Error, el email debe estar en la base de datos";
+            error.innerText = "Error, el email debe estar en la base de datos. En cuanto introduzcas un email valido, se cargara el nombre al presionar el boton de agregar incidencia";
         }
-    
         
-    
+
         if(validateTelefono(telefono.value)){
             const error  = document.getElementById('smallTelefono');
             error.className = '';
@@ -255,7 +258,6 @@ if(id){
         }
     })
 }
-
 
 
 function validateFecha(date) {
@@ -403,7 +405,7 @@ async function getUsuario(usuarioID){
         }
 
         const usuario = await respuesta.json();
-
+        console.log(usuario);
         return usuario;
 
     }catch (error){
@@ -412,6 +414,8 @@ async function getUsuario(usuarioID){
     }
 
 }
+
+
 
 //Funcion para obtener el aula por id del API
 async function getAula(aulaID){
