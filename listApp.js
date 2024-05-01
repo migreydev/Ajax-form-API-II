@@ -4,6 +4,8 @@ const urlIncidencias = 'http://localhost:3000/incidencias';
 const urlUsuarios = 'http://localhost:3000/usuarios';
 const urlAulas = 'http://localhost:3000/aulas';
 
+
+//Funcion para obtener las incidencias de la API
 async function getIncidencias(){
 
     const respuesta = await fetch (urlIncidencias);
@@ -15,6 +17,7 @@ async function getIncidencias(){
     const incidencias = await respuesta.json();
     
 
+    //Recorro bucle de incidencia para ir anotandola como lista
     for (const incidencia of incidencias) {
         const li = document.createElement('li');
         const a = document.createElement('a');
@@ -23,10 +26,12 @@ async function getIncidencias(){
         a.innerText = 'Editar';
         a.classList = 'btn btn-warning';
 
+        //Se almacenan el aula y usuario a traves de los metodos en una constante para extraer el nombre del aula y el nombre del usuario
         const aula = await getAulas(incidencia.id_aula);
         const usuario = await getUsuarios(incidencia.id_reportante);
 
 
+        //Si se cumple el filtro solo se listan aquellas que cuentan con un estado abierto o en proceso
         if(incidencia.estado === 'Abierta' || incidencia.estado === 'En Proceso'){
 
             li.innerHTML = `Id: <strong>${incidencia.id}</strong>, Fecha: <strong>${incidencia.fecha_incidente}</strong>, Aula: <strong>${aula.nombre}</strong>, Nombre del reportante: <strong>${usuario.nombre}</strong>`;
@@ -35,6 +40,7 @@ async function getIncidencias(){
             ul.append(li);
             ul.append(br);
     
+            //Evento asociado al boton para enviar por url el id de la incidencia para poder capturarlo y entrar en modo editar el formulario
             a.addEventListener('click', async()=>{
                 a.href =  `./index.html?id=${incidencia.id}`;
             })

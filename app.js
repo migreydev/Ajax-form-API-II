@@ -1,7 +1,10 @@
+
+//Declaracion de variables url
 const urlIncidencias = "http://localhost:3000/incidencias";
 const urlUsuarios = "http://localhost:3000/usuarios";
 const urlAulas = "http://localhost:3000/aulas";
 
+//Declaracion de variables de los diferentes campos que forman el formulario
 const fecha = document.getElementById('fecha');
 const email = document.getElementById('email');
 const nombre = document.getElementById('nombre');
@@ -14,14 +17,15 @@ const form = document.querySelector('form');
 const button = document.getElementById('submit');
 nombre.readOnly = true;
 
-
+//Obtener el id del objeto por url 
 const urlEditar = window.location.search;
 const parametro =  new URLSearchParams(urlEditar);
 const id = parametro.get('id');
 
-
+//Si es true
 if(id){
 
+    //Modifico el titutlo y boton para que se muestre el formulario en modo editar
     isValidDescripcion = false;
     const titulo = document.querySelector('h2');
     titulo.innerText = 'Editar Registro de Incidencias';
@@ -29,20 +33,24 @@ if(id){
     button.innerText = 'Editar';
     button.classList = 'btn btn-warning';
 
+    //Se crea un div que contendra un nuevo campo Estado
     const ultDiv = document.getElementById('ultimoDiv');
     const divSelect = document.createElement('div');
     ultDiv.append(divSelect);
     
+    //Crea una etiqueta label que almacena el titutlo de estado
     const label = document.createElement('label');
     label.innerText = 'Estado Incidencia';
     label.classList= 'form-label';
     
+    //Crea un elemento de tipo select 
     const selectEstado = document.createElement('select');
     selectEstado.classList= "form-control";
 
     divSelect.append(label);
     divSelect.append(selectEstado);
 
+    //Se crean las tres opciones que albergara el estado de la incidencia
     const optionAbierta = document.createElement('option');
     optionAbierta.innerText = 'Abierta';
     selectEstado.append(optionAbierta);
@@ -59,16 +67,19 @@ if(id){
     const br = document.createElement('br');
     divSelect.append(br);
 
+    //Funcion asincrona para obtener los datos del objeto de la API
     async function obtenerDatos(){
 
         try{
 
+            //Alberga la incidencia a editar a traves del metodo  getIncidenciaByID()
             const incidenciaAeditar = await getIncidenciaByID();
     
-    
+            //Se van validando los campos e imprimiendolos con sus respectivos valores que conforma el objeto
             fecha.value = incidenciaAeditar.fecha_incidente;
             fecha.readOnly = true;
     
+            //Se obtiene el usuario para poder extraer tanto su nombre como su email ya que incidencias solo alamcena el id del reportante (usuario)
             const usuario = await getUsuario(incidenciaAeditar.id_reportante);
             email.value = usuario.email;
             nombre.value = usuario.nombre;
@@ -81,6 +92,7 @@ if(id){
             hora.value = incidenciaAeditar.hora_incidente;
             hora.readOnly = true;
     
+            //Se obtiene el aula donde se produce la incidencia y se le asocia al campo option
             const aulaId = await getAula(incidenciaAeditar.id_aula);
             const option = document.createElement('option');
             option.value = aulaId.id;
@@ -93,6 +105,7 @@ if(id){
 
             const estadoAPI = incidenciaAeditar.estado;
 
+            //Muestra el estado de la incidencia
             if (optionAbierta.textContent === estadoAPI) {
                 optionAbierta.selected = true;
 
@@ -110,12 +123,14 @@ if(id){
 
     obtenerDatos()
 
+    //Evento asociado al boton para proceder a editar objeto
     button.addEventListener('click', async(e) =>{
 
         e.preventDefault();
 
         try{    
     
+            //Se valida el campo descripcion
             if(validateDescripcion(descripcion.value)){
                 const error  = document.getElementById('smallDescripcion');
                 error.className = '';
@@ -128,10 +143,11 @@ if(id){
                 error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
             }
 
+            //Si el campo descripcion es true se procede a editar 
             if(isValidDescripcion){
 
                 const incidenciaAeditar = await getIncidenciaByID();
-                const urlEditar = `${urlIncidencias}/${id}`;
+                const urlEditar = `${urlIncidencias}/${id}`; //URL que contiene el id del objeto 
                 const respuesta = await fetch (urlEditar, {
                     method: 'PUT',
                     headers: {
@@ -160,13 +176,14 @@ if(id){
         }
     })
 
-
+//Si el id es false el formulario aparece en modo de añadir incidencia
 }else {
 
     button.addEventListener('click', async(e) =>{
     
         e.preventDefault();
     
+        //Variables booleanas que actuan como variables banderas para validar los campos
         isValidFecha = false;
         isValidEmail = false;
         isValidNombre = false;
@@ -174,6 +191,7 @@ if(id){
         isValidHora = false;
         isValidDescripcion = false;
     
+        //Se valida cada campo segun el criterio, llamando a su metodo correspondiente. 
         if(validateFecha(fecha.value)){
         
             const error  = document.getElementById('smallFecha');
@@ -239,6 +257,7 @@ if(id){
             error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
         }
     
+        //Si todo es true se procede a añadir una incidencia, de lo contrario no se podra añadir 
         if(isValidFecha && isValidEmail  && isValidTelefono && isValidHora && isValidDescripcion){
             const respuesta = await fetch (urlIncidencias, {
                 method: 'POST',
@@ -259,7 +278,9 @@ if(id){
     })
 }
 
+//Funciones para validar los campos del formulario
 
+//Funcion para validar la fecha
 function validateFecha(date) {
     const fechaSeleccionada = new Date(date);
     const fechaActual = new Date();
@@ -280,7 +301,7 @@ async function validateEmail(email){
 
     try{
         isValid = false;
-        const respuesta  = await fetch (`${urlUsuarios}?email=${email}`);
+        const respuesta  = await fetch (`${urlUsuarios}?email=${email}`); //http://localhost:3000/usuarios?email=.....
 
         if(!respuesta.ok){
             console.log('Error al obtener la respuesta');
@@ -289,9 +310,9 @@ async function validateEmail(email){
         const usuario = await respuesta.json();
         
         usuario.forEach(element =>{
-            if (element.email === email) {
+            if (element.email === email) { //Si el email es igual al que se le pasa por parametro se le asocia el nombre
                 nombre.id = element.id;
-                nombre.value = element.nombre;
+                nombre.value = element.nombre; //al campo nombre
                 isValid = true;
             }
         })
@@ -303,7 +324,7 @@ async function validateEmail(email){
     return isValid;
 }
 
-
+//Funcion para validad la hora
 function validateHora(hora){
 
     const regexNumero = /^[1-6]$/;
@@ -316,6 +337,7 @@ function validateHora(hora){
     return isValid;
 }
 
+//Funcion para validar el telefono
 function validateTelefono(telefono){
     const regexTelefono = /^\d{9}$/;
     isValid = false;
@@ -328,6 +350,7 @@ function validateTelefono(telefono){
 
 }
 
+//Funcion para validar la descripcion
 function validateDescripcion(descripcion){
     const caracteres = 30;
     isValid = false;
@@ -339,6 +362,7 @@ function validateDescripcion(descripcion){
     return isValid;
 }
 
+//Funcion para obtener las aulas de la API
 async function getAulas(){
 
     try{
@@ -367,7 +391,7 @@ async function getAulas(){
 
 getAulas();
 
-
+//Creacion del boton ir a lista
 const a  = document.createElement('a');
 a.innerText = 'Ir a la lista';
 a.classList = 'btn btn-dark';
@@ -375,11 +399,11 @@ a.href = './list.html';
 form.append(a);
 
 
-//Funcion para obtener la incidencia por id del API
+//Funcion para obtener la incidencia por id de la API
 async function getIncidenciaByID(){
 
     try{
-        const respuesta = await fetch (`${urlIncidencias}/${id}`);
+        const respuesta = await fetch (`${urlIncidencias}/${id}`);//http://localhost:3000/incidencias/id.....
 
         if(!respuesta.ok){
             console.error('Error, al obtener la respuesta');
@@ -398,14 +422,14 @@ async function getIncidenciaByID(){
 async function getUsuario(usuarioID){
 
     try{
-        const respuesta = await fetch (`${urlUsuarios}/${usuarioID}`);
+        const respuesta = await fetch (`${urlUsuarios}/${usuarioID}`); //http://localhost:3000/usuarios/id..
 
         if(!respuesta.ok){
             console.error('Error, al obtener la respuesta');
         }
 
         const usuario = await respuesta.json();
-        console.log(usuario);
+        
         return usuario;
 
     }catch (error){
@@ -421,7 +445,7 @@ async function getUsuario(usuarioID){
 async function getAula(aulaID){
 
     try{
-        const respuesta = await fetch (`${urlAulas}/${aulaID}`);
+        const respuesta = await fetch (`${urlAulas}/${aulaID}`); //http://localhost:3000/aulas/id...
 
         if(!respuesta.ok){
             console.error('Error, al obtener la respuesta');
