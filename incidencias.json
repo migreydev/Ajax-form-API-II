@@ -1,14 +1,14 @@
 {
   "incidencias": [
     {
+      "id": "1",
       "fecha_incidente": "2023-11-15",
-      "id_reportante": "nombre",
+      "id_reportante": 1,
       "telefono_contacto": "123456789",
       "hora_incidente": "2",
-      "id_aula": "3",
+      "id_aula": 3,
       "descripcion": "Ocurrió un incidente grave durante la clase.",
-      "estado": "",
-      "id": "1"
+      "estado": "Abierta"
     },
     {
       "id": "2",
@@ -21,24 +21,34 @@
       "estado": "En Proceso"
     },
     {
+      "id": "aa89",
       "fecha_incidente": "2024-04-29",
-      "id_reportante": "nombre",
+      "id_reportante": "5",
       "telefono_contacto": "123456789",
       "hora_incidente": "R",
       "id_aula": "1",
       "descripcion": "bstiongoiesngnaeiongoarguornogirognrnaoui ",
-      "estado": "",
-      "id": "aa89"
+      "estado": "Abierta"
     },
     {
+      "id": "a444",
       "fecha_incidente": "2024-04-01",
-      "id_reportante": "nombre",
+      "id_reportante": "3",
       "telefono_contacto": "123456789",
       "hora_incidente": "4",
       "id_aula": "3",
       "descripcion": "gsnpgenwpifnkdfndankfnaeifneafnenfion prueba",
-      "estado": "",
-      "id": "a444"
+      "estado": "Abierta"
+    },
+    {
+      "fecha_incidente": "2024-04-29",
+      "id_reportante": "1",
+      "telefono_contacto": "123456789",
+      "hora_incidente": "R",
+      "id_aula": "6",
+      "descripcion": "bndkjbopzdhjgidinginfiagnionariogniasngnisangionof prueba editado con modificaciones correctas",
+      "estado": "Resuelta",
+      "id": "39ad"
     }
   ],
   "usuarios": [

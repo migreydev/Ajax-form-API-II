@@ -23,19 +23,23 @@ async function getIncidencias(){
         a.innerText = 'Editar';
         a.classList = 'btn btn-warning';
 
-        const aulas = await getAulas(incidencia.id_aula);
-        const usuarios = await getUsuarios(incidencia.id_reportante);
+        const aula = await getAulas(incidencia.id_aula);
+        const usuario = await getUsuarios(incidencia.id_reportante);
 
-        li.innerText = `Id: ${incidencia.id}, Fecha: ${incidencia.fecha_incidente}, Aula: ${aulas.nombre}, Nombre del reportante: ${usuarios.nombre}`
-        
 
-        li.append(a);
-        ul.append(li);
-        ul.append(br);
+        if(incidencia.estado === 'Abierta' || incidencia.estado === 'En Proceso'){
 
-        a.addEventListener('click', async()=>{
-            a.href =  `./index.html?id=${incidencia.id}`;
-        })
+            li.innerText = `Id: ${incidencia.id}, Fecha: ${incidencia.fecha_incidente}, Aula: ${aula.nombre}, Nombre del reportante: ${usuario.nombre}`
+    
+            li.append(a);
+            ul.append(li);
+            ul.append(br);
+    
+            a.addEventListener('click', async()=>{
+                a.href =  `./index.html?id=${incidencia.id}`;
+            })
+
+        }
 
     };
 }
@@ -74,7 +78,6 @@ async function getUsuarios(id){
         }
     
         const usuarios = await respuesta.json();
-        console.log('usuarios');
 
         return usuarios;
 

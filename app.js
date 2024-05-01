@@ -22,34 +22,65 @@ const id = parametro.get('id');
 
 if(id){
 
-    async function editIncidencia(){
+    isValidDescripcion = false;
+    const titulo = document.querySelector('h2');
+    titulo.innerText = 'Editar Registro de Incidencias';
+
+    button.innerText = 'Editar';
+    button.classList = 'btn btn-warning';
+
+    const ultDiv = document.getElementById('ultimoDiv');
+    const divSelect = document.createElement('div');
+    ultDiv.append(divSelect);
+    
+    const label = document.createElement('label');
+    label.innerText = 'Estado Incidencia';
+    label.classList= 'form-label';
+    
+    const selectEstado = document.createElement('select');
+    selectEstado.classList= "form-control";
+
+    divSelect.append(label);
+    divSelect.append(selectEstado);
+
+    const optionAbierta = document.createElement('option');
+    optionAbierta.innerText = 'Abierta';
+    selectEstado.append(optionAbierta);
+
+    const optionProceso = document.createElement('option');
+    optionProceso.innerText = 'En Proceso';
+    selectEstado.append(optionProceso);
+
+    const optionResulta = document.createElement('option');
+    optionResulta.innerText = 'Resuelta';
+    selectEstado.append(optionResulta);
+
+    
+    const br = document.createElement('br');
+    divSelect.append(br);
+
+    async function obtenerDatos(){
 
         try{
 
-            isValidDescripcion = false;
-            const titulo = document.querySelector('h2');
-            titulo.innerText = 'Editar Registro de Incidencias';
-
-            button.innerText = 'Editar';
-            button.classList = 'btn btn-warning';
-
             const incidenciaAeditar = await getIncidenciaByID();
-
+    
+    
             fecha.value = incidenciaAeditar.fecha_incidente;
             fecha.readOnly = true;
-
+    
             const usuario = await getUsuario(incidenciaAeditar.id_reportante);
             email.value = usuario.email;
             nombre.value = usuario.nombre;
             email.readOnly = true;
             nombre.readOnly = true;
-
+    
             telefono.value = incidenciaAeditar.telefono_contacto;
             telefono.readOnly = true;
-
+    
             hora.value = incidenciaAeditar.hora_incidente;
             hora.readOnly = true;
-
+    
             const aulaId = await getAula(incidenciaAeditar.id_aula);
             const option = document.createElement('option');
             option.value = aulaId.id;
@@ -57,54 +88,78 @@ if(id){
             option.selected = true;
             aula.append(option);
             aula.disabled = true;
-
+    
             descripcion.value = incidenciaAeditar.descripcion;
 
-            const divSelect = document.createElement('div');
-            const selectEstado = document.createElement('select');
-            const optionEstado = document.createElement('option');
+            const estadoAPI = incidenciaAeditar.estado;
 
-            const ultDiv = document.getElementById('ultimoDiv');
-            ultDiv.append(divSelect);
-            divSelect.append(selectEstado);
-            selectEstado.append(optionEstado);
+            if (optionAbierta.textContent === estadoAPI) {
+                optionAbierta.selected = true;
 
+            } else if (optionProceso.textContent === estadoAPI) {
+                optionProceso.selected = true;
 
+            } else {
+                optionResulta.selected = true;
+            }
+
+        }catch(error){
+            console.error('Error', error)
+        }
+    }
+
+    obtenerDatos()
+
+    button.addEventListener('click', async(e) =>{
+
+        e.preventDefault();
+
+        try{    
+    
             if(validateDescripcion(descripcion.value)){
                 const error  = document.getElementById('smallDescripcion');
                 error.className = '';
                 error.innerText = "";
                 isValidDescripcion = true;
-
+    
             }else {
                 const error  = document.getElementById('smallDescripcion');
                 error.className = 'text-danger';
                 error.innerText = "Error, la descripcion debe de tener al menos 30 caracteres";
             }
 
-            const urlEditar = `${urlIncidencias}/${id}`;
-            const respuesta = await fetch (urlEditar, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "fecha_incidente": fecha.value,
-                    "id_reportante": nombre.id,
-                    "telefono_contacto": telefono.value,
-                    "hora_incidente": hora.value.toUpperCase(),
-                    "id_aula": aula.value,
-                    "descripcion": descripcion.value,
-                    "estado": ""
-                })
-            });
+            if(isValidDescripcion){
 
+                const incidenciaAeditar = await getIncidenciaByID();
+                const urlEditar = `${urlIncidencias}/${id}`;
+                const respuesta = await fetch (urlEditar, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "fecha_incidente": fecha.value,
+                        "id_reportante": incidenciaAeditar.id_reportante,
+                        "telefono_contacto": telefono.value,
+                        "hora_incidente": hora.value.toUpperCase(),
+                        "id_aula": aula.value,
+                        "descripcion": descripcion.value,
+                        "estado": selectEstado.value,
+                    })
+                });
+
+                if (!respuesta.ok) {
+                    console.error('Error al editar la incidencia');
+                } else {
+                    window.location.href = 'list.html';
+                }
+            }
+    
         }catch (error){
             console.error(error, 'error');
         }
-    }
+    })
 
-    editIncidencia()
 
 }else {
 
@@ -329,7 +384,6 @@ async function getIncidenciaByID(){
         }
 
         const incidencia = await respuesta.json();
-        console.log(incidencia);
 
         return incidencia;
 
@@ -370,7 +424,6 @@ async function getAula(aulaID){
         }
 
         const aula = await respuesta.json();
-        console.log(aula);
 
         return aula;
 
